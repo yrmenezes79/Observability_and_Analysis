@@ -313,3 +313,11 @@ set httpd port 2812 and
 include /etc/monit/conf.d/*
 include /etc/monit/conf-enabled/*
 #
+# Monitoracao ssh
+check process sshd with pidfile /run/sshd.pid
+    start program = "/usr/sbin/service ssh start"
+    stop program = "/usr/sbin/service ssh stop"
+    if does not exist then restart
+    if failed port 22 protocol ssh with timeout 5 seconds then restart
+    if totalmem > 500 MB for 5 cycles then restart
+    if cpu usage > 90% for 3 cycles then alert
