@@ -1,0 +1,5 @@
+check process mariadb with pidfile /var/run/mysqld/mysqld.pid
+  start program = "/bin/systemctl start mariadb"
+  stop program = "/bin/systemctl stop mariadb"
+  if failed unixsocket /var/run/mysqld/mysqld.sock protocol MYSQL then restart
+  if 5 restarts within 5 cycles then timeout
