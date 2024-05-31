@@ -13,17 +13,21 @@ check_return_code() {
     fi
 }
 
+#!/bin/bash
+
+# Função para verificar se a variável não está vazia e está entre 1 e 6
 check_variable() {
     local var_value=$1
 
-    # Verifica se a variável está vazia
+    # Verifica se a variável não está vazia e se está entre 1 e 6
     if [ -z "$var_value" ]; then
-        echo "A variável está vazia."
-    # Verifica se a variável está entre 1 e 6
+        echo "Erro: A variável está vazia."
+        exit 1
     elif [ "$var_value" -ge 1 ] 2>/dev/null && [ "$var_value" -le 6 ] 2>/dev/null; then
-        echo "A variável está dentro do intervalo de 1 a 6."
+        echo "A variável não está vazia e está dentro do intervalo de 1 a 6."
     else
-        echo "A variável não está vazia e não está dentro do intervalo de 1 a 6."
+        echo "Erro: A variável não está dentro do intervalo de 1 a 6."
+        exit 1
     fi
 }
 
@@ -37,6 +41,10 @@ echo "$(date '+%Y-%m-%d %H:%M:%S') - Trocando o arquivo"
 mv /etc/monit/monitrc /etc/monit/monitrc_$(date '+%Y-%m-%d-%H:%M:%S')
 cp monitrc${VAR1} /etc/monit/monitrc
 check_return_code " Trocando o arquivo"
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Alterando permissao do arquivo"
+chmod 700 /etc/monit/monitrc
+check_return_code "Alterando permissao do arquivo"
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') - Verificando integriade do arquivo"
 monit -t
