@@ -23,8 +23,8 @@ check_variable() {
     if [ -z "$var_value" ]; then
         echo "Erro: A variável está vazia."
         exit 1
-    elif [ "$var_value" -ge 1 ] 2>/dev/null && [ "$var_value" -le 6 ] 2>/dev/null; then
-        echo "A variável não está vazia e está dentro do intervalo de 1 a 6."
+    elif [ "$var_value" -ge 1 ] 2>/dev/null && [ "$var_value" -le 9 ] 2>/dev/null; then
+        echo "A variável não está vazia e está dentro do intervalo de 1 a 9."
     else
         echo "Erro: A variável não está dentro do intervalo de 1 a 6."
         exit 1
