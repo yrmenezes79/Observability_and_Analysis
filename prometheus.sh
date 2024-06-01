@@ -35,3 +35,7 @@ systemctl daemon-reload
 echo "$(date '+%Y-%m-%d %H:%M:%S') - Start Prometheus"
 systemctl start prometheus 
 check_return_code "Start Prometheus"
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Status Prometheus"
+systemctl status prometheus 
+check_return_code "Status Prometheus"
