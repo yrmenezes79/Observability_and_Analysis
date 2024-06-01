@@ -1,5 +1,4 @@
 #!/bin/bash
-VAR1=$1
 # Função para analisar o código de retorno de um comando
 check_return_code() {
     local return_code=$?
