@@ -29,7 +29,7 @@ dnf install prometheus -y
 check_return_code "Instalando Prometheus"
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') - Copiando serviço Prometheus"
-cp -Rf prometheus.service etc/systemd/system/
+cp -Rf prometheus.service /etc/systemd/system/
 systemctl daemon-reload
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') - Start Prometheus"
