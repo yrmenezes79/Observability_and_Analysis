@@ -1,0 +1,11 @@
+groups:
+  - name: disk_alerts
+    rules:
+      - alert: HighDiskUsage
+        expr: 100 - (node_filesystem_avail_bytes * 100 / node_filesystem_size_bytes) > 10
+        for: 30s
+        labels:
+          severity: warning
+        annotations:
+          summary: High disk usage on instance {{$labels.instance}}
+          description: Disk usage is above 10% on instance {{$labels.instance}}.
