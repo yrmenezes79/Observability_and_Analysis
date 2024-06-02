@@ -1,5 +1,7 @@
-
 #!/bin/bash
+
+FILE_PROME=/etc/prometheus/prometheus.yml
+
 # Função para analisar o código de retorno de um comando
 check_return_code() {
     local return_code=$?
@@ -26,7 +28,8 @@ FILE=$1
 if [ -e "$FILE" ]; then
     echo "O arquivo '$FILE' existe."
     cp -Rf $FILE /etc/prometheus/
-    
+    check_return_code "Copiando arquivo $FILE"
+        
 else
     echo "O arquivo '$FILE' não existe."
     exit 0
