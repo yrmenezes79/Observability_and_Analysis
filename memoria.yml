@@ -1,0 +1,11 @@
+groups:
+  - name: memory_alerts
+    rules:
+      - alert: HighMemoryUsage
+        expr: (node_memory_Active_bytes / node_memory_MemTotal_bytes) * 100 > 20
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: High memory usage on instance {{$labels.instance}}
+          description: Memory usage is above 20% on instance {{$labels.instance}}.
