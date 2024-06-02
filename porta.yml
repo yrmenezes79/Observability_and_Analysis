@@ -1,0 +1,12 @@
+groups:
+- name: port80_alerts
+  rules:
+  - alert: Port80DownAlert
+    expr: up == 0
+    for: 1m
+    labels:
+      severity: critical
+      port: "80"
+    annotations:
+      summary: "Porta 80 fora do ar"
+      description: "A porta 80 do host {{ $labels.instance }} está fora do ar."
