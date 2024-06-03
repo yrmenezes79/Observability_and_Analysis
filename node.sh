@@ -45,9 +45,9 @@ check_return_code "Start Node"
 # Verifica o status do serviço Node Exporter e simplifica a saída
 if systemctl is-active --quiet node_exporter; then
     echo "$(date '+%Y-%m-%d %H:%M:%S') - Node Exporter está ativo."
-    exit 1
 else
     echo "$(date '+%Y-%m-%d %H:%M:%S') - Node Exporter não está ativo."
+    exit 1
 fi
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') - Alterando arquivo $FILE"
