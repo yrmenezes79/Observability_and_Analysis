@@ -18,7 +18,7 @@ apt-get update
 check_return_code "Atualize a lista de pacotes"
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') -  Instalação de pacotes"
-apt-get install -y software-properties-common
+apt-get install -y software-properties-common net-tools
 check_return_code " Instalação de pacotes"
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') -  Capturar chave"
