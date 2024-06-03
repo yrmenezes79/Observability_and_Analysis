@@ -53,7 +53,7 @@ fi
 echo "$(date '+%Y-%m-%d %H:%M:%S') - Alterando arquivo $FILE"
 echo "  - job_name: "Node 1"
     static_configs:
-      - targets: ["${IP_ADDRESS}:9090"]
+      - targets: ["${IP_ADDRESS}:9100"]
 " >> $FILE
 check_return_code "Alterando arquivo $FILE"
 
