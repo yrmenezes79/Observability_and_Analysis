@@ -37,7 +37,7 @@ COUNT=`cat $FILE_PROME |grep  cpu.yml |wc -l`
 if [[ $COUNT -eq 0 ]]
     then
         echo "$(date '+%Y-%m-%d %H:%M:%S') - Limpeza do arquivo - $FILE_PROME"
-        sed -i '/rules_files:/d' "$FILE_PROME"
+        sed -i '/rule_files:/d' "$FILE_PROME"
         check_return_code "Limpeza do arquivo - $FILE_PROME"
 
         echo "$(date '+%Y-%m-%d %H:%M:%S') - Adicionar arquivo - $FILE"
