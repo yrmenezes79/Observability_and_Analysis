@@ -13,27 +13,38 @@ check_return_code() {
     fi
 }
 
-echo "$(date '+%Y-%m-%d %H:%M:%S') - Adicionando repositorio"
-cp -Rf grafana.repo /etc/yum.repos.d/
-check_return_code "Adicionando repositorio"
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Atualize a lista de pacotes"
+apt-get update
+check_return_code "Atualize a lista de pacotes"
 
-echo "$(date '+%Y-%m-%d %H:%M:%S') - Update Policie"
-update-crypto-policies --set DEFAULT:SHA1 
-check_return_code "Update Policie"
+echo "$(date '+%Y-%m-%d %H:%M:%S') -  Instalação de pacotes"
+apt-get install -y software-properties-common
+check_return_code " Instalação de pacotes"
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') -  Capturar chave"
+curl https://packages.grafana.com/gpg.key | sudo apt-key --keyring /etc/apt/trusted.gpg.d/grafana.gpg add -
+check_return_code "Capturar chave"
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') -  Adicionar repositório"
+add-apt-repository "deb https://packages.grafana.com/oss/deb stable main"
+check_return_code "Adicionar repositório"
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') -  Adicione a chave GPG do repositório"
+wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
+check_return_code "Adicione a chave GPG do repositório"
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') -  Atualize a lista de pacotes"
+apt-get update
+check_return_code "Atualize a lista de pacotes"
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') - Instalação Grafana"
-dnf install grafana -y
+apt-get install -y grafana
 check_return_code "Instalação Grafana"
 
-echo "$(date '+%Y-%m-%d %H:%M:%S') - Start Grafana"
-systemctl daemon-reload
-systemctl enable --now grafana-server
-check_return_code "Start Grafana"
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Inicie o serviço do Grafana"
+systemctl start grafana-server
+check_return_code "Inicie o serviço do Grafana"
 
-echo "$(date '+%Y-%m-%d %H:%M:%S') - Status Grafana"
-if systemctl is-active --quiet grafana; then
-    echo "$(date '+%Y-%m-%d %H:%M:%S') - Grafana está ativo."
-else
-    echo "$(date '+%Y-%m-%d %H:%M:%S') - Grafana não está ativo."
-    exit 1
-fi
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Verificar porta Grafana"
+netstat -tuln | grep 3000
+check_return_code "Verificar porta Grafana"
