@@ -58,13 +58,17 @@ echo "$(date '+%Y-%m-%d %H:%M:%S') - Start Prometheus"
 systemctl start prometheus 
 check_return_code "Start Prometheus"
 
-echo "$(date '+%Y-%m-%d %H:%M:%S') - Status Prometheus"
-systemctl status prometheus 
-check_return_code "Status Prometheus"
-
 echo "$(date '+%Y-%m-%d %H:%M:%S') - Troca de variavel"
 sed -i "s/localhost/$IP_ADDRESS/g" /etc/prometheus/prometheus.yml
 check_return_code "Troca de variavel"
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Status Prometheus"
+if systemctl is-active --quiet prometheus; then
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - Prometheus está ativo."
+else
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - Prometheus não está ativo."
+    exit 1
+fi
 
 else
     echo "$(date '+%Y-%m-%d %H:%M:%S') Endereço IP inválido: formato incorreto."
