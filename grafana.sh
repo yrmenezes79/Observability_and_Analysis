@@ -13,12 +13,6 @@ check_return_code() {
     fi
 }
 
-# Verifica se a variável não está vazia
-if [ -z "$IP_ADDRESS" ]; then
-    echo "$(date '+%Y-%m-%d %H:%M:%S') A variável está vazia. Por favor, forneça um endereço IP."
-    exit 1
-fi
-
 echo "$(date '+%Y-%m-%d %H:%M:%S') - Adicionando repositorio"
 cp -Rf grafana.repo /etc/yum.repos.d/
 check_return_code "Adicionando repositorio"
