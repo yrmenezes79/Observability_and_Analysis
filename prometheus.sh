@@ -11,7 +11,7 @@ check_return_code() {
         echo "$(date '+%Y-%m-%d %H:%M:%S') Erro: $message (Código de retorno: $return_code)"
         exit $return_code
     else
-        echo "Sucesso: $message"
+        echo "$(date '+%Y-%m-%d %H:%M:%S') Sucesso: $message"
     fi
 }
 
