@@ -8,7 +8,7 @@ check_return_code() {
     local message=$1
 
     if [ $return_code -ne 0 ]; then
-        echo "Erro: $message (Código de retorno: $return_code)"
+        echo "$(date '+%Y-%m-%d %H:%M:%S') Erro: $message (Código de retorno: $return_code)"
         exit $return_code
     else
         echo "Sucesso: $message"
@@ -17,7 +17,7 @@ check_return_code() {
 
 # Verifica se a variável não está vazia
 if [ -z "$IP_ADDRESS" ]; then
-    echo "A variável está vazia. Por favor, forneça um endereço IP."
+    echo "$(date '+%Y-%m-%d %H:%M:%S') A variável está vazia. Por favor, forneça um endereço IP."
     exit 1
 fi
 
@@ -29,7 +29,7 @@ if [[ $IP_ADDRESS =~ $regex ]]; then
     IFS='.' read -r -a octets <<< "$IP_ADDRESS"
     for octet in "${octets[@]}"; do
         if ((octet < 0 || octet > 255)); then
-            echo "Endereço IP inválido: cada octeto deve estar entre 0 e 255."
+            echo "$(date '+%Y-%m-%d %H:%M:%S') Endereço IP inválido: cada octeto deve estar entre 0 e 255."
             exit 1
         fi
     done
@@ -61,8 +61,13 @@ check_return_code "Start Prometheus"
 echo "$(date '+%Y-%m-%d %H:%M:%S') - Status Prometheus"
 systemctl status prometheus 
 check_return_code "Status Prometheus"
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Troca de variavel"
+sed -i "s/localhost/$IP_ADDRESS/g" /etc/prometheus/prometheus.yml
+check_return_code "Troca de variavel"
+
 else
-    echo "Endereço IP inválido: formato incorreto."
+    echo "$(date '+%Y-%m-%d %H:%M:%S') Endereço IP inválido: formato incorreto."
     exit 1
 fi
 
