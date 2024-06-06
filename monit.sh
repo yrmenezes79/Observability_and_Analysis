@@ -28,13 +28,13 @@ apt-get install monit -y
 check_return_code "Instalação do Monit"
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') - Alterar arquivo de configuração"
-echo "set httpd port 2812 and/" >> /etc/monit/monitrc
+echo "set httpd port 2812 and" >> $FILE
 check_return_code "Alterar arquivo de configuração"
-echo "allow localhost/allow 0.0.0.0/" >> /etc/monit/monitrc
+echo "allow 0.0.0.0" >> $FILE
 check_return_code "Alterar arquivo de configuração"
-echo "allow localhost /allow 0.0.0.0\/0/" >> /etc/monit/monitrc
+echo "allow 0.0.0.0/0" >> $FILE
 check_return_code "Alterar arquivo de configuração"
-echo "allow admin:monit" >> /etc/monit/monitrc
+echo "allow admin:monit" >> $FILE
 check_return_code "Alterar arquivo de configuração"
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') - Stop - Start Monit"
