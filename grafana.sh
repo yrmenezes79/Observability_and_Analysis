@@ -46,5 +46,6 @@ systemctl start grafana-server
 check_return_code "Inicie o serviço do Grafana"
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') - Verificar porta Grafana"
+sleep 10
 netstat -tuln | grep 3000
 check_return_code "Verificar porta Grafana"
