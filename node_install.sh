@@ -34,11 +34,23 @@ if [[ $IP_ADDRESS =~ $regex ]]; then
         fi
     done
     echo "Endereço IP válido."
-    echo "$(date '+%Y-%m-%d %H:%M:%S') - Instalando pacotes"
-dnf -y install zlib-devel pam-devel openssl-devel libtool bison flex autoconf gcc make git net-tools lsof net-tools
-check_return_code "Instalando pacotes"
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') - Adicionando repositorio"
 cp -Rf prometheus-rpm_release.repo /etc/yum.repos.d/
 check_return_code "Adicionando repositorio"
 
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Instalando node_exporter"
+dnf install node_exporter -y
+check_return_code "Instalando node_exporter"
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Start Node"
+systemctl start node_exporter
+check_return_code "Start Node"
+
+# Verifica o status do serviço Node Exporter e simplifica a saída
+if systemctl is-active --quiet node_exporter; then
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - Node Exporter está ativo."
+else
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - Node Exporter não está ativo."
+    exit 1
+fi
