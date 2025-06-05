@@ -1,0 +1,37 @@
+
+
+set log /var/log/monit.log
+
+set idfile /var/lib/monit/id
+set statefile /var/lib/monit/state
+
+
+ set eventqueue
+set httpd port 2812 and
+
+include /etc/monit/conf.d/*
+include /etc/monit/conf-enabled/*
+check process sshd with pidfile /run/sshd.pid
+    start program = "/usr/sbin/service ssh start"
+    stop program = "/usr/sbin/service ssh stop"
+    if does not exist then restart
+    if failed port 22 protocol ssh with timeout 5 seconds then restart
+    if totalmem > 500 MB for 5 cycles then restart
+    if cpu usage > 90% for 3 cycles then alert
+
+
+check filesystem rootfs with path /
+  if space usage > 10% for 5 times within 15 cycles then alert
+
+check system cpu
+  if loadavg (5min) > 5.0 for 3 cycles then alert
+  if cpu usage (user) > 90% for 3 cycles then alert
+
+check host portssh with address 127.0.0.1
+  if failed port 22 protocol ssh
+    then alert
+check file alernatives with path /var/log/alternatives.log
+  if match "updated" then alert
+
+check host UOL with address www.uol.com.br
+  if failed port 443 protocol https then alert
