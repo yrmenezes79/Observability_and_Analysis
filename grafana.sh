@@ -18,20 +18,16 @@ apt-get update
 check_return_code "Atualize a lista de pacotes"
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') -  Instalação de pacotes"
-apt-get install -y software-properties-common net-tools
+apt-get install -y curl gnupg2 ca-certificates git
 check_return_code " Instalação de pacotes"
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') -  Capturar chave"
-curl https://packages.grafana.com/gpg.key | sudo apt-key --keyring /etc/apt/trusted.gpg.d/grafana.gpg add -
+curl -fsSL https://packages.grafana.com/gpg.key | sudo gpg --dearmor -o /usr/share/keyrings/grafana.gpg
 check_return_code "Capturar chave"
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') -  Adicionar repositório"
-add-apt-repository "deb https://packages.grafana.com/oss/deb stable main"
+echo "deb [signed-by=/usr/share/keyrings/grafana.gpg] https://packages.grafana.com/oss/deb stable main" | sudo tee /etc/apt/sources.list.d/grafana.list
 check_return_code "Adicionar repositório"
-
-echo "$(date '+%Y-%m-%d %H:%M:%S') -  Adicione a chave GPG do repositório"
-wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
-check_return_code "Adicione a chave GPG do repositório"
 
 echo "$(date '+%Y-%m-%d %H:%M:%S') -  Atualize a lista de pacotes"
 apt-get update
